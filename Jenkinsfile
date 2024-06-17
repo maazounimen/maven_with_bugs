@@ -53,5 +53,24 @@ pipeline {
                 }
              }
         }
+
+        stage("Nexus") {
+                	steps {
+                		nexusArtifactUploader artifacts:
+                		[[
+                			artifactId: 'vprofile',
+                			classifier: '',
+                			file: 'target/vprofile-v2.war',
+                			type: 'war'
+                		]],
+                		credentialsId: 'nexus_pwd',
+                		groupId: 'com.visualpathit.account',
+                		nexusUrl: '10.185.11.76:8081',
+                		nexusVersion: 'nexus3',
+                		protocol: 'http',
+                		repository: 'sonarRepo',
+                		version: '${env.BUILD_ID}-${env.BUILD_TIMESTAMP}'
+                	}
+                }
     }
 }
